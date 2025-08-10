@@ -1,0 +1,26 @@
+# Core requirements
+torch>=2.0.0
+transformers>=4.30.0
+numpy>=1.23.0
+
+# Web framework (choose one)
+flask>=2.2.0
+# or
+fastapi>=0.95.0
+uvicorn>=0.21.0
+
+# Optional but recommended
+sentencepiece>=0.1.97  # For tokenization
+tqdm>=4.64.0          # For progress bars
+accelerate>=0.18.0    # For distributed inference
+
+# Development tools
+black>=22.12.0        # Code formatting
+flake8>=5.0.4         # Linting
+mypy>=0.991           # Type checking
+pytest>=7.2.0         # Testing
+
+# GPU support (uncomment if using CUDA)
+# torchvision>=0.14.0
+# torchaudio>=2.0.0
+# --extra-index-url https://download.pytorch.org/whl/cu117

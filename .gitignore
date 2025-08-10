@@ -1,0 +1,19 @@
+# Ignore dataset and data folders (usually large files)
+dataset/
+data/
+
+# Ignore model weights and checkpoints
+*.pth
+*.ckpt
+
+# Ignore Python cache and environment files
+__pycache__/
+*.pyc
+envs/
+*.egg-info/
+
+# Ignore Jupyter notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore logs and temporary files
+*.log

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neural Chat</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --text-primary: #1f2937;
+      --text-secondary: #6b7280;
+      --bg-primary: #f9fafb;
+      --bg-secondary: #ffffff;
+      --border: #e5e7eb;
+      --success: #10b981;
+      --error: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+
+    header {
+      background-color: var(--bg-secondary);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .logo-icon {
+      width: 24px;
+      height: 24px;
+      background-color: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+    }
+
+    main {
+      flex: 1;
+      padding: 1.25rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      background-color: var(--bg-secondary);
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.3s ease-out forwards;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user {
+      background-color: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 0.25rem;
+      margin-left: auto;
+    }
+
+    .bot {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      align-self: flex-start;
+      border-bottom-left-radius: 0.25rem;
+      border: 1px solid var(--border);
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 0.25rem;
+      padding: 0.75rem 1rem;
+      background-color: var(--bg-primary);
+      border-radius: 1rem;
+      align-self: flex-start;
+      border: 1px solid var(--border);
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--text-secondary);
+      border-radius: 50%;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typingAnimation {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-4px); }
+    }
+
+    footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.75rem;
+      background-color: var(--bg-secondary);
+    }
+
+    .input-container {
+      flex: 1;
+      position: relative;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      outline: none;
+      transition: all 0.2s;
+      background-color: var(--bg-primary);
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    button {
+      background-color: var(--primary);
+      border: none;
+      color: white;
+      font-weight: 500;
+      padding: 0 1.25rem;
+      border-radius: 1.5rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    button:hover {
+      background-color: var(--primary-dark);
+    }
+
+    button:disabled {
+      background-color: var(--text-secondary);
+      cursor: not-allowed;
+    }
+
+    .send-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Scrollbar styling */
+    main::-webkit-scrollbar {
+      width: 6px;
+    }
+    main::-webkit-scrollbar-thumb {
+      background-color: rgba(0, 0, 0, 0.1);
+      border-radius: 3px;
+    }
+    main::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      body {
+        border: none;
+      }
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div class="logo-icon">N</div>
+      <span>Neural Chat</span>
+    </div>
+  </header>
+
+  <main id="chat-container">
+    <!-- Initial welcome message -->
+    <div class="message bot" style="opacity: 1; transform: none;">
+      Hello! I'm your AI assistant. How can I help you today?
+    </div>
+  </main>
+
+  <footer>
+    <div class="input-container">
+      <input
+        type="text"
+        id="user-input"
+        placeholder="Type your message..."
+        autocomplete="off"
+        autofocus
+        onkeydown="if(event.key === 'Enter'){sendMessage()}"
+      />
+    </div>
+    <button id="send-button" onclick="sendMessage()">
+      <svg class="send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 2L11 13"></path>
+        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+      </svg>
+    </button>
+  </footer>
+
+  <script>
+    const chatContainer = document.getElementById("chat-container");
+    const userInput = document.getElementById("user-input");
+    const sendButton = document.getElementById("send-button");
+
+    // Append message to chat with animation
+    function appendMessage(text, sender) {
+      const msgDiv = document.createElement("div");
+      msgDiv.classList.add("message", sender);
+      msgDiv.textContent = text;
+      chatContainer.appendChild(msgDiv);
+      
+      // Scroll to bottom with smooth behavior
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
+
+    // Show typing indicator
+    function showTypingIndicator() {
+      const typingDiv = document.createElement("div");
+      typingDiv.classList.add("typing-indicator");
+      typingDiv.innerHTML = `
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+        <div class="typing-dot"></div>
+      `;
+      chatContainer.appendChild(typingDiv);
+      chatContainer.scrollTo({
+        top: chatContainer.scrollHeight,
+        behavior: 'smooth'
+      });
+      return typingDiv;
+    }
+
+    // Remove typing indicator
+    function removeTypingIndicator(typingElement) {
+      if (typingElement && typingElement.parentNode) {
+        typingElement.remove();
+      }
+    }
+
+    // Send user message and get bot response
+    async function sendMessage() {
+      const text = userInput.value.trim();
+      if (!text) return;
+
+      // Add user message
+      appendMessage(text, "user");
+      userInput.value = "";
+      userInput.disabled = true;
+      sendButton.disabled = true;
+
+      // Show typing indicator
+      const typingElement = showTypingIndicator();
+
+      try {
+        const response = await fetch("/generate", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ text }),
+        });
+
+        // Remove typing indicator
+        removeTypingIndicator(typingElement);
+
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+
+        const data = await response.json();
+        appendMessage(data.output, "bot");
+      } catch (err) {
+        removeTypingIndicator(typingElement);
+        appendMessage("Sorry, I encountered an error. Please try again.", "bot");
+        console.error("Error:", err);
+      } finally {
+        userInput.disabled = false;
+        sendButton.disabled = false;
+        userInput.focus();
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,151 +1,152 @@
-# LLM-Engine: A Platform to Build and Deploy Large Language Models for Chatbots
+# 🚀 LLM-Engine: Build, Train, and Deploy Large Language Models for Chatbots  
+
+<!-- Project Badges -->
+<p align="center">
+  <!-- GitHub Release -->
+  <a href="https://github.com/anthonyhuang1909/LLM-Engine/releases">
+    <img src="https://img.shields.io/github/v/release/anthonyhuang1909/LLM-Engine?style=flat-square&logo=github" alt="Latest Release" />
+  </a>
+  <a href="https://github.com/anthonyhuang1909/LLM-Engine">
+    <img src="https://img.shields.io/github/downloads/anthonyhuang1909/LLM-Engine/total?style=flat-square" alt="GitHub downloads" />
+  </a>
+
+  <!-- Python -->
+  <a href="https://www.python.org/">
+    <img src="https://img.shields.io/badge/Python-3.8%2B-blue?style=flat-square&logo=python" alt="Python versions" />
+  </a>
+
+  <!-- License -->
+  <a href="https://github.com/anthonyhuang1909/LLM-Engine/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/anthonyhuang1909/LLM-Engine?style=flat-square" alt="License" />
+  </a>
+
+  <!-- Issues -->
+  <a href="https://github.com/anthonyhuang1909/LLM-Engine/issues">
+    <img src="https://img.shields.io/github/issues/anthonyhuang1909/LLM-Engine?style=flat-square&logo=github" alt="Open issues" />
+  </a>
+
+  <!-- Coverage -->
+  <a href="https://app.codecov.io/gh/anthonyhuang1909/LLM-Engine">
+    <img src="https://codecov.io/gh/anthonyhuang1909/LLM-Engine/branch/main/graph/badge.svg?style=flat-square" alt="Coverage" />
+  </a>
+</p>
+
+
 
 ---
 
-## Overview
+## 📖 Overview  
 
-**LLM-Engine** is a comprehensive platform designed to facilitate the building, training, evaluation, and deployment of large language models (LLMs) specifically tailored for chatbot applications. This project implements a GPT-2 style model using the Transformer architecture, enabling efficient natural language understanding and generation.
-
----
-
-## GPT-2 Model Architecture
-
-The GPT-2 model is based on the Transformer decoder architecture, which consists of *N* stacked Transformer decoder blocks. Each block includes multi-head self-attention mechanisms and position-wise feed-forward layers. This architecture enables the model to capture long-range dependencies and contextual information effectively, making it highly suitable for language modeling tasks.
-
-The image below illustrates the overall GPT-2 architecture:
-
-![GPT-2 Model Architecture](diagram/diagram.jpeg)
-
-*Source:* Yang, Steve; Ali, Zulfikhar; Wong, Bryan (2023). *FLUID-GPT (Fast Learning to Understand and Investigate Dynamics with a Generative Pre-Trained Transformer): Efficient Predictions of Particle Trajectories and Erosion*.  
-DOI: [10.26434/chemrxiv-2023-ppk9s](https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/64e3304660d17b562a9db0f4/original/fluid-gpt-fast-learning-to-understand-and-investigate-dynamics-with-a-generative-pre-trained-transformer-efficient-predictions-of-particle-trajectories-and-erosion.pdf)
+**LLM-Engine** is a modular platform to **build, train, evaluate, and deploy large language models (LLMs)** for chatbot applications.  
+It implements a **GPT-2 style Transformer decoder**, providing efficient natural language understanding and generation with customizable architecture.  
 
 ---
 
-## Quick Start
+## 🧩 GPT-2 Model Architecture  
 
-### Using Docker
+The GPT-2 model follows the **Transformer decoder architecture**, consisting of stacked layers of:  
+- Multi-head self-attention  
+- Position-wise feed-forward layers  
+- Residual connections & layer normalization  
 
-To build and run the inference environment using Docker:
+This design enables capturing **long-range dependencies** and **contextual information** effectively.  
 
+![GPT-2 Model Architecture](diagram/diagram.jpeg)  
+
+*Source:* Yang, Steve; Ali, Zulfikhar; Wong, Bryan (2023). [FLUID-GPT Paper](https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/64e3304660d17b562a9db0f4/original/fluid-gpt-fast-learning-to-understand-and-investigate-dynamics-with-a-generative-pre-trained-transformer-efficient-predictions-of-particle-trajectories-and-erosion.pdf)  
+
+---
+
+## ⚡ Quick Start  
+
+### Using Docker  
 ```bash
 chmod +x run.sh
 ./run.sh
-```
+```  
 
-This script will build the Docker image and start the inference container.
-
-### Manual Setup
-
-If you prefer to run the project manually, install the required Python packages:
-
+### Manual Setup  
 ```bash
 pip install -r requirements.txt
-```
-
-Then run the inference script:
-
-```bash
 python3 inference.py
-```
+```  
 
 ---
 
-## Dataset Preparation
+## 📂 Dataset Preparation  
 
-This project uses conversational datasets suitable for chatbot training.
-
-To download the latest dataset version, use the KaggleHub Python package:
-
+Download datasets (example: ChatGPT conversations from Kaggle):  
 ```python
 import kagglehub
 
-# Download latest dataset
 path = kagglehub.dataset_download("noahpersaud/89k-chatgpt-conversations")
+print("Path:", path)
+```  
 
-print("Path to dataset files:", path)
-```
-
-Prepare the dataset for training by running:
-
+Then preprocess:  
 ```bash
 python scripts/prepare_dataset.py --input chatlogs.jsonl --output data/word_level_dataset.csv
-```
+```  
 
 ---
 
-## Training the Model
-
-To train the model from scratch, use the training script with configurable parameters:
+## 🏋️ Training the Model  
 
 ```bash
-python3 train.py \
-    --epochs 10 \
-    --lr 0.0001 \
-    --d_model 512 \
-    --n_layers 8 \
-    --n_heads 8 \
-    --dropout 0.1 \
-    --save_path Model.pth \
-    --print_samples 3 \
-    --tie_embeddings
-```
+python3 train.py     --epochs 10     --lr 0.0001     --d_model 512     --n_layers 8     --n_heads 8     --dropout 0.1     --save_path Model.pth     --print_samples 3     --tie_embeddings
+```  
 
-### Training Arguments Description:
-
-- `--epochs` : Number of training epochs (default: 10)  
-- `--lr` : Learning rate (default: 1e-4)  
-- `--d_model` : Dimensionality of model embeddings (default: 512)  
-- `--n_layers` : Number of Transformer decoder layers (default: 8)  
-- `--n_heads` : Number of attention heads (default: 8)  
-- `--dropout` : Dropout rate (default: 0.1)  
-- `--save_path` : Path to save the trained model (default: "Model.pth")  
-- `--print_samples` : Number of sample outputs printed during training (default: 3)  
-- `--tie_embeddings` : Use tied input and output embeddings (flag)
+**Arguments:**  
+- `--epochs` : Training epochs  
+- `--lr` : Learning rate  
+- `--d_model` : Embedding dimension  
+- `--n_layers` : Transformer decoder layers  
+- `--n_heads` : Attention heads  
+- `--dropout` : Dropout rate  
+- `--save_path` : Save model path  
+- `--print_samples` : Print training samples  
+- `--tie_embeddings` : Tie input/output embeddings  
 
 ---
 
-## Pretrained Model and Vocabulary
-
-You may download a pretrained model and vocabulary files for quick experimentation:
+## 📦 Pretrained Model  
 
 ```bash
 git clone https://huggingface.co/anthonyhuang1909/LLM-Engine
-```
+```  
 
-The repository contains:
-
-- `Model.pth` — pretrained model weights  
-- `vocab.json` — vocabulary mapping for tokenization
-
----
-## Disclaimer
-
-This project implements a small-scale GPT model designed for educational and experimental purposes. It demonstrates the core principles of Transformer-based language models while maintaining simplicity for easier understanding and modification.
+Includes:  
+- `Model.pth` – pretrained weights  
+- `vocab.json` – tokenizer vocabulary  
 
 ---
-## Citation
 
-If you use this project or model in your research, please cite the original GPT-2 paper:
+## ⚠️ Disclaimer  
 
-```
+This project is intended for **educational & research purposes**.  
+It demonstrates the principles of Transformer-based models on a smaller scale.  
+
+---
+
+## 📑 Citation  
+
+If you use this project, cite the original GPT-2 paper:  
+
+```bibtex
 @article{radford2019language,
   title={Language Models are Unsupervised Multitask Learners},
   author={Radford, Alec and Wu, Jeffrey and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
   year={2019},
   institution={OpenAI}
 }
-```
+```  
 
 ---
 
-## License
+## 📜 License  
 
-This project is released under the MIT License.
-
----
-
-For questions or contributions, please open an issue or submit a pull request.
+Released under the **MIT License**.  
 
 ---
 
-*Last updated: 2025-08-10*
+*Last updated: 2025-08-21*  

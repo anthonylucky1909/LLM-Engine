@@ -24,14 +24,11 @@
   <a href="https://github.com/anthonyhuang1909/LLM-Engine/issues">
     <img src="https://img.shields.io/github/issues/anthonyhuang1909/LLM-Engine?style=flat-square&logo=github" alt="Open issues" />
   </a>
-
   <!-- Coverage -->
   <a href="https://app.codecov.io/gh/anthonyhuang1909/LLM-Engine">
     <img src="https://codecov.io/gh/anthonyhuang1909/LLM-Engine/branch/main/graph/badge.svg?style=flat-square" alt="Coverage" />
   </a>
 </p>
-
-
 
 ---
 
@@ -53,7 +50,7 @@ This design enables capturing **long-range dependencies** and **contextual infor
 
 ![GPT-2 Model Architecture](diagram/diagram.jpeg)  
 
-*Source:* Yang, Steve; Ali, Zulfikhar; Wong, Bryan (2023). [FLUID-GPT Paper](https://chemrxiv.org/engage/api-gateway/chemrxiv/assets/orp/resource/item/64e3304660d17b562a9db0f4/original/fluid-gpt-fast-learning-to-understand-and-investigate-dynamics-with-a-generative-pre-trained-transformer-efficient-predictions-of-particle-trajectories-and-erosion.pdf)  
+*Reference:* Vaswani et al. (2017). *Attention is All You Need*. [arXiv:1706.03762](https://arxiv.org/abs/1706.03762)  
 
 ---
 
@@ -75,17 +72,14 @@ python3 inference.py
 
 ## 📂 Dataset Preparation  
 
-Download datasets (example: ChatGPT conversations from Kaggle):  
-```python
-import kagglehub
+For experiments, you can use open-source datasets such as:  
 
-path = kagglehub.dataset_download("noahpersaud/89k-chatgpt-conversations")
-print("Path:", path)
-```  
+- [OpenAssistant Conversations](https://huggingface.co/datasets/OpenAssistant/oasst1)  
+- [Dialog datasets on Hugging Face](https://huggingface.co/datasets)  
 
-Then preprocess:  
+Example:  
 ```bash
-python scripts/prepare_dataset.py --input chatlogs.jsonl --output data/word_level_dataset.csv
+python scripts/prepare_dataset.py --input raw_dataset.jsonl --output data/word_level_dataset.csv
 ```  
 
 ---
@@ -93,7 +87,7 @@ python scripts/prepare_dataset.py --input chatlogs.jsonl --output data/word_leve
 ## 🏋️ Training the Model  
 
 ```bash
-python3 train.py     --epochs 10     --lr 0.0001     --d_model 512     --n_layers 8     --n_heads 8     --dropout 0.1     --save_path Model.pth     --print_samples 3     --tie_embeddings
+python3 train.py   --epochs 10   --lr 0.0001   --d_model 512   --n_layers 8   --n_heads 8   --dropout 0.1   --save_path Model.pth   --print_samples 3   --tie_embeddings
 ```  
 
 **Arguments:**  
@@ -110,6 +104,8 @@ python3 train.py     --epochs 10     --lr 0.0001     --d_model 512     --n_layer
 ---
 
 ## 📦 Pretrained Model  
+
+You can load pretrained weights from Hugging Face:  
 
 ```bash
 git clone https://huggingface.co/anthonyhuang1909/LLM-Engine

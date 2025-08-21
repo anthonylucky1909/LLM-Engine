@@ -126,23 +126,6 @@ Includes:
 This project is intended for **educational & research purposes**.  
 It demonstrates the principles of Transformer-based models on a smaller scale.  
 
----
-
-## 📑 Citation  
-
-If you use this project, cite the original GPT-2 paper:  
-
-```bibtex
-@article{radford2019language,
-  title={Language Models are Unsupervised Multitask Learners},
-  author={Radford, Alec and Wu, Jeffrey and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya},
-  year={2019},
-  institution={OpenAI}
-}
-```  
-
----
-
 ## 📜 License  
 
 Released under the **MIT License**.  

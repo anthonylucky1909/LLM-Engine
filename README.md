@@ -24,6 +24,7 @@
   <a href="https://github.com/anthonyhuang1909/LLM-Engine/issues">
     <img src="https://img.shields.io/github/issues/anthonyhuang1909/LLM-Engine?style=flat-square&logo=github" alt="Open issues" />
   </a>
+
   <!-- Coverage -->
   <a href="https://app.codecov.io/gh/anthonyhuang1909/LLM-Engine">
     <img src="https://codecov.io/gh/anthonyhuang1909/LLM-Engine/branch/main/graph/badge.svg?style=flat-square" alt="Coverage" />
@@ -35,7 +36,7 @@
 ## 📖 Overview  
 
 **LLM-Engine** is a modular platform to **build, train, evaluate, and deploy large language models (LLMs)** for chatbot applications.  
-It implements a **GPT-2 style Transformer decoder**, providing efficient natural language understanding and generation with customizable architecture.  
+It implements a **GPT-2 style Transformer decoder**, enabling efficient natural language understanding and generation with customizable architecture.  
 
 ---
 
@@ -50,7 +51,7 @@ This design enables capturing **long-range dependencies** and **contextual infor
 
 ![GPT-2 Model Architecture](diagram/diagram.jpeg)  
 
-*Reference:* Vaswani et al. (2017). *Attention is All You Need*. [arXiv:1706.03762](https://arxiv.org/abs/1706.03762)  
+*Reference:* Yang, Steve; Ali, Zulfikhar; Wong, Bryan (2023). *FLUID-GPT (Fast Learning to Understand and Investigate Dynamics with a Generative Pre-Trained Transformer): Efficient Predictions of Particle Trajectories and Erosion.* ChemRxiv. [https://doi.org/10.26434/chemrxiv-2023-ppk9s](https://doi.org/10.26434/chemrxiv-2023-ppk9s)  
 
 ---
 
@@ -72,14 +73,17 @@ python3 inference.py
 
 ## 📂 Dataset Preparation  
 
-For experiments, you can use open-source datasets such as:  
+Download datasets (example: ChatGPT conversations from Kaggle):  
+```python
+import kagglehub
 
-- [OpenAssistant Conversations](https://huggingface.co/datasets/OpenAssistant/oasst1)  
-- [Dialog datasets on Hugging Face](https://huggingface.co/datasets)  
+path = kagglehub.dataset_download("noahpersaud/89k-chatgpt-conversations")
+print("Path:", path)
+```  
 
-Example:  
+Then preprocess:  
 ```bash
-python scripts/prepare_dataset.py --input raw_dataset.jsonl --output data/word_level_dataset.csv
+python scripts/prepare_dataset.py --input chatlogs.jsonl --output data/word_level_dataset.csv
 ```  
 
 ---
@@ -87,7 +91,7 @@ python scripts/prepare_dataset.py --input raw_dataset.jsonl --output data/word_l
 ## 🏋️ Training the Model  
 
 ```bash
-python3 train.py   --epochs 10   --lr 0.0001   --d_model 512   --n_layers 8   --n_heads 8   --dropout 0.1   --save_path Model.pth   --print_samples 3   --tie_embeddings
+python3 train.py     --epochs 10     --lr 0.0001     --d_model 512     --n_layers 8     --n_heads 8     --dropout 0.1     --save_path Model.pth     --print_samples 3     --tie_embeddings
 ```  
 
 **Arguments:**  
@@ -105,8 +109,6 @@ python3 train.py   --epochs 10   --lr 0.0001   --d_model 512   --n_layers 8   --
 
 ## 📦 Pretrained Model  
 
-You can load pretrained weights from Hugging Face:  
-
 ```bash
 git clone https://huggingface.co/anthonyhuang1909/LLM-Engine
 ```  
@@ -121,6 +123,8 @@ Includes:
 
 This project is intended for **educational & research purposes**.  
 It demonstrates the principles of Transformer-based models on a smaller scale.  
+
+---
 
 ## 📜 License  
 
